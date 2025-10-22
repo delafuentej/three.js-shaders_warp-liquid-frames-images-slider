@@ -7,9 +7,9 @@ gsap.registerPlugin(SplitText);
 
 function App() {
   return (
-    <h1 class="text-3xl font-bold underline">
+    <div>
       <Slider />
-    </h1>
+    </div>
   );
 }
 
