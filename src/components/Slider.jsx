@@ -1,4 +1,3 @@
-// src/components/Slider.jsx
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -6,6 +5,7 @@ import { SplitText } from "gsap/all";
 import { slides } from "../constants/index";
 import warpVertexShader from "../shaders/warp/vertex.glsl";
 import warpFragmentShader from "../shaders/warp/fragment.glsl";
+import SlideContent from "./SlideContent";
 
 gsap.registerPlugin(SplitText);
 gsap.config({ nullTargetWarn: false });
@@ -285,18 +285,7 @@ export default function Slider() {
       <canvas ref={canvasRef} className="block w-full h-full" />
 
       <div ref={contentRef} className="slider-content">
-        <div className="slide-title">
-          <h1>{slides[0].title}</h1>
-        </div>
-
-        <div className="slide-description">
-          <p>{slides[0].description}</p>
-          <div className="slide-info">
-            <p>Type. {slides[0].type}</p>
-            <p>Field. {slides[0].field}</p>
-            <p>Date. {slides[0].date}</p>
-          </div>
-        </div>
+        <SlideContent slide={slides[0]} />
       </div>
     </div>
   );
