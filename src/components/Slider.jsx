@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import * as THREE from "three";
 import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import { slides } from "../constants/index";
+import { useThreeScene } from "../hooks";
 import warpVertexShader from "../shaders/warp/vertex.glsl";
 import warpFragmentShader from "../shaders/warp/fragment.glsl";
 import SlideContent from "./SlideContent";
@@ -11,12 +11,18 @@ gsap.registerPlugin(SplitText);
 gsap.config({ nullTargetWarn: false });
 
 export default function Slider() {
-  const canvasRef = useRef(null);
+  //  const canvasRef = useRef(null);
   const contentRef = useRef(null);
 
-  const shaderMaterialRef = useRef(null);
-  const rendererRef = useRef(null);
-  const texturesRef = useRef([]);
+  const { canvasRef, shaderMaterialRef, texturesRef } = useThreeScene(
+    warpVertexShader,
+    warpFragmentShader,
+    slides
+  );
+
+  // const shaderMaterialRef = useRef(null);
+  // const rendererRef = useRef(null);
+  //const texturesRef = useRef([]);
   const isTransitioningRef = useRef(false);
   const currentIndexRef = useRef(0);
 
@@ -88,91 +94,91 @@ export default function Slider() {
   };
 
   // --- inicialización de Three.js y carga de texturas ---
-  useEffect(() => {
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  // useEffect(() => {
+  // const scene = new THREE.Scene();
+  // const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      antialias: true,
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    rendererRef.current = renderer;
+  // const renderer = new THREE.WebGLRenderer({
+  // canvas: canvasRef.current,
+  // antialias: true,
+  // });
+  // renderer.setSize(window.innerWidth, window.innerHeight);
+  // rendererRef.current = renderer;
 
-    const loader = new THREE.TextureLoader();
-    const slideTextures = [];
-    const loadPromises = slides.map(
-      (s) =>
-        new Promise((resolve) => {
-          loader.load(s.image, (t) => {
-            t.minFilter = t.magFilter = THREE.LinearFilter;
-            t.userData = {
-              size: new THREE.Vector2(t.image.width, t.image.height),
-            };
-            resolve(t);
-          });
-        })
-    );
+  // const loader = new THREE.TextureLoader();
+  // const slideTextures = [];
+  // const loadPromises = slides.map(
+  // (s) =>
+  // new Promise((resolve) => {
+  // loader.load(s.image, (t) => {
+  // t.minFilter = t.magFilter = THREE.LinearFilter;
+  // t.userData = {
+  // size: new THREE.Vector2(t.image.width, t.image.height),
+  // };
+  // resolve(t);
+  // });
+  // })
+  // );
 
-    const shaderMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uTexture1: { value: null },
-        uTexture2: { value: null },
-        uProgress: { value: 0.0 },
-        uResolution: {
-          value: new THREE.Vector2(window.innerWidth, window.innerHeight),
-        },
-        uTexture1Size: { value: new THREE.Vector2(1, 1) },
-        uTexture2Size: { value: new THREE.Vector2(1, 1) },
-      },
-      vertexShader: warpVertexShader,
-      fragmentShader: warpFragmentShader,
-      transparent: true,
-    });
-    shaderMaterialRef.current = shaderMaterial;
+  // const shaderMaterial = new THREE.ShaderMaterial({
+  // uniforms: {
+  // uTexture1: { value: null },
+  // uTexture2: { value: null },
+  // uProgress: { value: 0.0 },
+  // uResolution: {
+  // value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+  // },
+  // uTexture1Size: { value: new THREE.Vector2(1, 1) },
+  // uTexture2Size: { value: new THREE.Vector2(1, 1) },
+  // },
+  // vertexShader: warpVertexShader,
+  // fragmentShader: warpFragmentShader,
+  // transparent: true,
+  // });
+  // shaderMaterialRef.current = shaderMaterial;
 
-    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), shaderMaterial));
+  // scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), shaderMaterial));
 
-    // render loop (simple)
-    let mounted = true;
-    const render = () => {
-      if (!mounted) return;
-      requestAnimationFrame(render);
-      renderer.render(scene, camera);
-    };
+  // render loop (simple)
+  // let mounted = true;
+  // const render = () => {
+  // if (!mounted) return;
+  // requestAnimationFrame(render);
+  // renderer.render(scene, camera);
+  // };
 
-    Promise.all(loadPromises).then((loaded) => {
-      texturesRef.current = loaded;
-      // set initial textures
-      shaderMaterial.uniforms.uTexture1.value = texturesRef.current[0];
-      shaderMaterial.uniforms.uTexture2.value =
-        texturesRef.current[1 % texturesRef.current.length];
-      shaderMaterial.uniforms.uTexture1Size.value =
-        texturesRef.current[0].userData.size;
-      shaderMaterial.uniforms.uTexture2Size.value =
-        texturesRef.current[1 % texturesRef.current.length].userData.size;
+  // Promise.all(loadPromises).then((loaded) => {
+  // texturesRef.current = loaded;
+  //   set initial textures
+  // shaderMaterial.uniforms.uTexture1.value = texturesRef.current[0];
+  // shaderMaterial.uniforms.uTexture2.value =
+  // texturesRef.current[1 % texturesRef.current.length];
+  // shaderMaterial.uniforms.uTexture1Size.value =
+  // texturesRef.current[0].userData.size;
+  // shaderMaterial.uniforms.uTexture2Size.value =
+  // texturesRef.current[1 % texturesRef.current.length].userData.size;
 
-      render();
-    });
+  // render();
+  // });
 
-    const handleResize = () => {
-      if (!rendererRef.current || !shaderMaterialRef.current) return;
-      rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-      shaderMaterialRef.current.uniforms.uResolution.value.set(
-        window.innerWidth,
-        window.innerHeight
-      );
-    };
+  // const handleResize = () => {
+  // if (!rendererRef.current || !shaderMaterialRef.current) return;
+  // rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+  // shaderMaterialRef.current.uniforms.uResolution.value.set(
+  // window.innerWidth,
+  // window.innerHeight
+  // );
+  // };
 
-    window.addEventListener("resize", handleResize);
+  // window.addEventListener("resize", handleResize);
 
-    return () => {
-      mounted = false;
-      window.removeEventListener("resize", handleResize);
-      renderer.dispose();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // return () => {
+  // mounted = false;
+  // window.removeEventListener("resize", handleResize);
+  // renderer.dispose();
+  // };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   // --- animación de transición entre slides ---
   const animateSlideTransition = (nextIndex) => {
