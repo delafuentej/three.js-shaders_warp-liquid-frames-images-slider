@@ -5,7 +5,7 @@ export const slides = [
       "Nature reclaims what humanity abandoned — light and ruin converge in an otherworldly rebirth.",
     type: "Editorial",
     field: "Post-Apocalyptic Art",
-    date: "2025",
+    date: "2023",
     image: "/images/img-1.jpg",
   },
   {
@@ -14,13 +14,13 @@ export const slides = [
       "Amid the twilight of an alien world, a lone explorer drifts above silent ships — neon embers flicker across the void as if time itself is holding its breath.",
     type: "Sci-Fi Concept",
     field: "Futurism",
-    date: "2025",
+    date: "2022",
     image: "/images/img-2.jpg",
   },
   {
     title: "Silent Watcher",
     description:
-      "An observant Asian woman, a spy hidden in the shadows, surveys a neon-lit Japanese street at night. Flickering kanji signs of small shops cast colored reflections on wet pavement, blending mystery with the pulse of the city.",
+      "An observant Asian spy watches a neon-lit Japanese street at night, where flickering kanji signs reflect on wet pavement.",
     type: "Cinematic Portrait",
     field: "Neo-Noir Photography",
     date: "2025",
@@ -32,16 +32,16 @@ export const slides = [
       "Mountains pierce the heavens as a fractured moon collapses above — a tale of solitude and transcendence.",
     type: "Conceptual",
     field: "Digital Matte",
-    date: "2025",
+    date: "2003",
     image: "/images/img-4.jpg",
   },
   {
-    title: "Embers of the Last Stand",
+    title: "Final Embers",
     description:
-      "A lone Japanese warrior stands resolute on an abandoned railway, flames rising around him like a fiery aurora, his armor reflecting the chaos of battle and the weight of honor.",
+      "A lone Japanese warrior stands on an abandoned railway, flames swirling around him, his armor reflecting battle and honor.",
     type: "Cinematic Portrait",
     field: "Neo-Noir Photography",
-    date: "2025",
+    date: "2012",
     image: "/images/img-5.jpg",
   },
   {
@@ -50,16 +50,16 @@ export const slides = [
       "In the fading twilight, a silhouette stands before a world consumed by shadow — beauty within collapse.",
     type: "Editorial",
     field: "Neo-Noir",
-    date: "2025",
+    date: "2024",
     image: "/images/img-6.jpg",
   },
   {
-    title: "Whispers in the Shadows",
+    title: "Silent Whispers",
     description:
-      "A beautiful, curious woman holds a flickering candelabrum in the darkness, peering through dense bushes. Her makeup glows softly in the candlelight, revealing a mix of wonder and mystery in the hidden night.",
+      "A curious woman explores the dark with a glowing candle, her face lit with mystery.",
     type: "Cinematic Portrait",
     field: "Neo-Noir Photography",
-    date: "2025",
+    date: "2008",
     image: "/images/img-7.jpg",
   },
   {
@@ -68,16 +68,16 @@ export const slides = [
       "A submerged monument surrounded by ethereal creatures — the ocean holds its breath in eternal contemplation.",
     type: "Fine Art",
     field: "Surrealism",
-    date: "2025",
+    date: "2003",
     image: "/images/img-8.jpg",
   },
   {
     title: "Moonlit Whiskers",
     description:
-      "A tender cartoon scene of a mother cat and her small kitten, cuddling under the gentle glow of the moon. Their eyes sparkle with warmth and curiosity as they share a quiet, magical night together.",
+      "A mother cat and kitten cuddle under the moon, sharing a warm, magical night.",
     type: "Illustration",
     field: "Cartoon Art",
-    date: "2025",
+    date: "2017",
     image: "/images/img-9.jpg",
   },
 
@@ -87,7 +87,7 @@ export const slides = [
       "A haunting juxtaposition of struggle and reflection — sparks, ropes, and defiance in chiaroscuro tones.",
     type: "Cinematic",
     field: "Dark Portraiture",
-    date: "2025",
+    date: "1995",
     image: "/images/img-10.jpg",
   },
   {
@@ -96,27 +96,27 @@ export const slides = [
       "Bound by invisible threads, the human spirit fractures and reforms — a journey through despair and illumination.",
     type: "Cinematic",
     field: "Psychological Portraiture",
-    date: "2025",
+    date: "2012",
     image: "/images/img-11.jpg",
   },
 
   {
     title: "Echo House",
     description:
-      "A labyrinth of sky-blue and emerald walls breathes through a network of pipes and funnels — a living structure where every falling object whispers its own descent.",
+      "A living maze of blue and green walls breathes as objects whisper through pipes.",
     type: "Conceptual Architecture",
     field: "Surreal Design",
-    date: "2025",
+    date: "1998",
     image: "/images/img-12.jpg",
   },
 
   {
     title: "The Observer",
     description:
-      "Clad in crimson and silence, the masked sentinel watches — emotionless, loyal to the game’s unseen order. Power is faceless here.",
+      "Clad in crimson and silence, the masked sentinel watches — emotionless, loyal to the game’s unseen order.",
     type: "Cinematic Portrait",
     field: "Conceptual Drama",
-    date: "2025",
+    date: "2021",
     image: "/images/img-13.jpg",
   },
 ];

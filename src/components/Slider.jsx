@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { SplitText } from "gsap/all";
+
 import { slides } from "../constants/index";
 import {
   useThreeScene,
@@ -10,9 +10,6 @@ import {
 import warpVertexShader from "../shaders/warp/vertex.glsl";
 import warpFragmentShader from "../shaders/warp/fragment.glsl";
 import SlideContent from "./SlideContent";
-
-gsap.registerPlugin(SplitText);
-gsap.config({ nullTargetWarn: false });
 
 export default function Slider() {
   //  const canvasRef = useRef(null);
@@ -24,7 +21,7 @@ export default function Slider() {
     slides
   );
 
-  const { processTextElements } = useSlideTextAnimations(contentRef);
+  const { processTextElements, animateIn } = useSlideTextAnimations(contentRef);
 
   const { handleSlideChange } = useSlideTransition({
     slides,
@@ -290,6 +287,7 @@ export default function Slider() {
   // --- setup inicial del texto al cargar la página ---
   useEffect(() => {
     setupInitialSlide();
+    animateIn();
     // attach click listener al documento (igual que tu script original)
     document.addEventListener("click", handleSlideChange);
 
@@ -302,7 +300,7 @@ export default function Slider() {
   // --- JSX: la estructura replica tu HTML original ---
   return (
     <div className="slider">
-      <canvas ref={canvasRef} className="block w-full h-full" />
+      <canvas ref={canvasRef} className="slider-canvas" />
 
       <div ref={contentRef} className="slider-content">
         <SlideContent slide={slides[0]} />
