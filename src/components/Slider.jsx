@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import { slides } from "../constants/index";
-import { useThreeScene } from "../hooks";
+import { useThreeScene, useSlideTextAnimations } from "../hooks";
 import warpVertexShader from "../shaders/warp/vertex.glsl";
 import warpFragmentShader from "../shaders/warp/fragment.glsl";
 import SlideContent from "./SlideContent";
@@ -19,6 +19,8 @@ export default function Slider() {
     warpFragmentShader,
     slides
   );
+
+  const { processTextElements, animateIn } = useSlideTextAnimations(contentRef);
 
   // const shaderMaterialRef = useRef(null);
   // const rendererRef = useRef(null);
@@ -64,15 +66,15 @@ export default function Slider() {
     });
   };
 
-  const processTextElements = (container) => {
-    if (!container) return;
-    const title = container.querySelector(".slide-title h1");
-    if (title) createCharacterElements(title);
+  // const processTextElements = (container) => {
+  // if (!container) return;
+  // const title = container.querySelector(".slide-title h1");
+  // if (title) createCharacterElements(title);
 
-    container
-      .querySelectorAll(".slide-description p")
-      .forEach(createLineElements);
-  };
+  // container
+  // .querySelectorAll(".slide-description p")
+  // .forEach(createLineElements);
+  // };
 
   const setupInitialSlide = () => {
     const content = contentRef.current;

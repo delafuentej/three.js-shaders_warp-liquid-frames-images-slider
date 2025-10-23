@@ -1,3 +1,3 @@
-export * from "./useSlideAnimations";
+export * from "./useSlideTextAnimations";
 export * from "./useSlideTransition";
 export * from "./useThreeScene";
