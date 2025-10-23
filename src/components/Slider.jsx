@@ -2,7 +2,11 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import { slides } from "../constants/index";
-import { useThreeScene, useSlideTextAnimations } from "../hooks";
+import {
+  useThreeScene,
+  useSlideTextAnimations,
+  useSlideTransition,
+} from "../hooks";
 import warpVertexShader from "../shaders/warp/vertex.glsl";
 import warpFragmentShader from "../shaders/warp/fragment.glsl";
 import SlideContent from "./SlideContent";
@@ -20,51 +24,59 @@ export default function Slider() {
     slides
   );
 
-  const { processTextElements, animateIn } = useSlideTextAnimations(contentRef);
+  const { processTextElements } = useSlideTextAnimations(contentRef);
+
+  const { handleSlideChange } = useSlideTransition({
+    slides,
+    shaderMaterialRef,
+    texturesRef,
+    contentRef,
+    processTextElements,
+  });
 
   // const shaderMaterialRef = useRef(null);
   // const rendererRef = useRef(null);
   //const texturesRef = useRef([]);
-  const isTransitioningRef = useRef(false);
-  const currentIndexRef = useRef(0);
+  // const isTransitioningRef = useRef(false);
+  // const currentIndexRef = useRef(0);
 
   // --- utilidades para split text (igual que tu script original) ---
-  const createCharacterElements = (element) => {
-    if (!element) return;
-    if (element.querySelectorAll(".char").length > 0) return;
+  // const createCharacterElements = (element) => {
+  // if (!element) return;
+  // if (element.querySelectorAll(".char").length > 0) return;
 
-    const words = element.textContent.split(" ");
-    element.innerHTML = "";
+  // const words = element.textContent.split(" ");
+  // element.innerHTML = "";
 
-    words.forEach((word, index) => {
-      const wordDiv = document.createElement("div");
-      wordDiv.className = "word";
+  // words.forEach((word, index) => {
+  // const wordDiv = document.createElement("div");
+  // wordDiv.className = "word";
 
-      [...word].forEach((char) => {
-        const charDiv = document.createElement("div");
-        charDiv.className = "char";
-        charDiv.innerHTML = `<span>${char}</span>`;
-        wordDiv.appendChild(charDiv);
-      });
+  // [...word].forEach((char) => {
+  // const charDiv = document.createElement("div");
+  // charDiv.className = "char";
+  // charDiv.innerHTML = `<span>${char}</span>`;
+  // wordDiv.appendChild(charDiv);
+  // });
 
-      element.appendChild(wordDiv);
+  // element.appendChild(wordDiv);
 
-      if (index < words.length - 1) {
-        const spaceChar = document.createElement("div");
-        spaceChar.className = "word";
-        spaceChar.innerHTML = '<div class="char"><span> </span></div>';
-        element.appendChild(spaceChar);
-      }
-    });
-  };
+  // if (index < words.length - 1) {
+  // const spaceChar = document.createElement("div");
+  // spaceChar.className = "word";
+  // spaceChar.innerHTML = '<div class="char"><span> </span></div>';
+  // element.appendChild(spaceChar);
+  // }
+  // });
+  // };
 
-  const createLineElements = (element) => {
-    if (!element) return;
-    new SplitText(element, { type: "lines", linesClass: "line" });
-    element.querySelectorAll(".line").forEach((line) => {
-      line.innerHTML = `<span>${line.textContent}</span>`;
-    });
-  };
+  // const createLineElements = (element) => {
+  // if (!element) return;
+  // new SplitText(element, { type: "lines", linesClass: "line" });
+  // element.querySelectorAll(".line").forEach((line) => {
+  // line.innerHTML = `<span>${line.textContent}</span>`;
+  // });
+  // };
 
   // const processTextElements = (container) => {
   // if (!container) return;
@@ -183,97 +195,97 @@ export default function Slider() {
   // }, []);
 
   // --- animación de transición entre slides ---
-  const animateSlideTransition = (nextIndex) => {
-    const shaderMat = shaderMaterialRef.current;
-    const textures = texturesRef.current;
-    if (!shaderMat || textures.length === 0) return;
+  // const animateSlideTransition = (nextIndex) => {
+  // const shaderMat = shaderMaterialRef.current;
+  // const textures = texturesRef.current;
+  // if (!shaderMat || textures.length === 0) return;
 
-    shaderMat.uniforms.uTexture1.value = textures[currentIndexRef.current];
-    shaderMat.uniforms.uTexture2.value = textures[nextIndex];
-    shaderMat.uniforms.uTexture1Size.value =
-      textures[currentIndexRef.current].userData.size;
-    shaderMat.uniforms.uTexture2Size.value = textures[nextIndex].userData.size;
+  // shaderMat.uniforms.uTexture1.value = textures[currentIndexRef.current];
+  // shaderMat.uniforms.uTexture2.value = textures[nextIndex];
+  // shaderMat.uniforms.uTexture1Size.value =
+  // textures[currentIndexRef.current].userData.size;
+  // shaderMat.uniforms.uTexture2Size.value = textures[nextIndex].userData.size;
 
-    const content = contentRef.current;
-    const chars = content.querySelectorAll(".char span");
-    const lines = content.querySelectorAll(".line span");
+  // const content = contentRef.current;
+  // const chars = content.querySelectorAll(".char span");
+  // const lines = content.querySelectorAll(".line span");
 
-    const tl = gsap.timeline({
-      onStart: () => (isTransitioningRef.current = true),
-      onComplete: () => {
-        isTransitioningRef.current = false;
-        currentIndexRef.current = nextIndex;
-        // after transition, reset progress and set textures so next transition uses correct base
-        shaderMat.uniforms.uProgress.value = 0;
-        shaderMat.uniforms.uTexture1.value = textures[nextIndex];
-        shaderMat.uniforms.uTexture1Size.value =
-          textures[nextIndex].userData.size;
+  // const tl = gsap.timeline({
+  // onStart: () => (isTransitioningRef.current = true),
+  // onComplete: () => {
+  // isTransitioningRef.current = false;
+  // currentIndexRef.current = nextIndex;
+  //   after transition, reset progress and set textures so next transition uses correct base
+  // shaderMat.uniforms.uProgress.value = 0;
+  // shaderMat.uniforms.uTexture1.value = textures[nextIndex];
+  // shaderMat.uniforms.uTexture1Size.value =
+  // textures[nextIndex].userData.size;
 
-        // update DOM text content to new slide (keep same structure)
-        const titleEl = content.querySelector(".slide-title h1");
-        const descEl = content.querySelector(".slide-description p");
-        const infoEls = content.querySelectorAll(".slide-info p");
+  // update DOM text content to new slide (keep same structure)
+  // const titleEl = content.querySelector(".slide-title h1");
+  // const descEl = content.querySelector(".slide-description p");
+  // const infoEls = content.querySelectorAll(".slide-info p");
 
-        titleEl.textContent = slides[nextIndex].title;
-        descEl.textContent = slides[nextIndex].description;
-        if (infoEls[0])
-          infoEls[0].textContent = `Type. ${slides[nextIndex].type}`;
-        if (infoEls[1])
-          infoEls[1].textContent = `Field. ${slides[nextIndex].field}`;
-        if (infoEls[2])
-          infoEls[2].textContent = `Date. ${slides[nextIndex].date}`;
+  // titleEl.textContent = slides[nextIndex].title;
+  // descEl.textContent = slides[nextIndex].description;
+  // if (infoEls[0])
+  // infoEls[0].textContent = `Type. ${slides[nextIndex].type}`;
+  // if (infoEls[1])
+  // infoEls[1].textContent = `Field. ${slides[nextIndex].field}`;
+  // if (infoEls[2])
+  // infoEls[2].textContent = `Date. ${slides[nextIndex].date}`;
 
-        // re-process and animate text in
-        processTextElements(content);
-        const inChars = content.querySelectorAll(".char span");
-        const inLines = content.querySelectorAll(".line span");
-        gsap.fromTo(
-          inChars,
-          { y: "100%" },
-          { y: "0%", duration: 0.8, stagger: 0.02, ease: "power2.out" }
-        );
-        gsap.fromTo(
-          inLines,
-          { y: "100%" },
-          {
-            y: "0%",
-            duration: 0.8,
-            stagger: 0.02,
-            ease: "power2.out",
-            delay: 0.15,
-          }
-        );
-      },
-    });
+  //  re-process and animate text in
+  // processTextElements(content);
+  // const inChars = content.querySelectorAll(".char span");
+  // const inLines = content.querySelectorAll(".line span");
+  // gsap.fromTo(
+  // inChars,
+  // { y: "100%" },
+  // { y: "0%", duration: 0.8, stagger: 0.02, ease: "power2.out" }
+  // );
+  // gsap.fromTo(
+  // inLines,
+  // { y: "100%" },
+  // {
+  // y: "0%",
+  // duration: 0.8,
+  // stagger: 0.02,
+  // ease: "power2.out",
+  // delay: 0.15,
+  // }
+  // );
+  // },
+  // });
 
-    // shader progress animation (uniform)
-    tl.to(
-      shaderMat.uniforms.uProgress,
-      { value: 1, duration: 2.5, ease: "power2.inOut" },
-      0
-    );
+  //shader progress animation (uniform)
+  // tl.to(
+  // shaderMat.uniforms.uProgress,
+  // { value: 1, duration: 2.5, ease: "power2.inOut" },
+  // 0
+  // );
 
-    // text out animations
-    tl.to(
-      chars,
-      { y: "-100%", duration: 0.8, stagger: 0.02, ease: "power2.in" },
-      0
-    );
-    tl.to(
-      lines,
-      { y: "-100%", duration: 0.8, stagger: 0.02, ease: "power2.in" },
-      0.05
-    );
-  };
+  //text out animations
+  // tl.to(
+  // chars,
+  // { y: "-100%", duration: 0.8, stagger: 0.02, ease: "power2.in" },
+  // 0
+  // );
+  // tl.to(
+  // lines,
+  // { y: "-100%", duration: 0.8, stagger: 0.02, ease: "power2.in" },
+  // 0.05
+  // );
+  // };
 
   // --- click handler para avanzar slide ---
-  const handleSlideChange = (e) => {
-    // evita clicks cuando hay transición en curso
-    if (isTransitioningRef.current) return;
+  // const handleSlideChange = (e) => {
+  // evita clicks cuando hay transición en curso
+  // if (isTransitioningRef.current) return;
 
-    const nextIndex = (currentIndexRef.current + 1) % slides.length;
-    animateSlideTransition(nextIndex);
-  };
+  // const nextIndex = (currentIndexRef.current + 1) % slides.length;
+  // animateSlideTransition(nextIndex);
+  // };
 
   // --- setup inicial del texto al cargar la página ---
   useEffect(() => {
