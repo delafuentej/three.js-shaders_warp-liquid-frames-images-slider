@@ -5,5 +5,17 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), glsl(), tailwindcss()],
+  plugins: [
+    react(),
+    glsl({
+      include: [
+        // Qué archivos aceptar
+        "**/*.glsl",
+        "**/*.wgsl",
+        "**/*.vert",
+        "**/*.frag",
+      ],
+    }),
+    tailwindcss(),
+  ],
 });
