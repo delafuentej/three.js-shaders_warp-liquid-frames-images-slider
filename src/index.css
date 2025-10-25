@@ -13,19 +13,19 @@ body {
 @layer components {
   .slider {
     @apply relative w-screen h-svh text-white overflow-hidden;
-
+    /*  */
     .slider-canvas {
       @apply block w-full h-full;
     }
-
+    /*  */
     .slider-content {
       @apply absolute top-0 left-0 select-none w-full h-full z-2;
-
+      /*  */
       .slide-title {
         @apply absolute top-[45%] left-1/2 w-full text-center transform -translate-x-1/2 -translate-y-1/2 max-[1000px]:top-1/2;
 
         h1 {
-          @apply uppercase text-[7vw] font-bold flex justify-center gap-[0.2em];
+          @apply uppercase text-[7.5vw] font-bold flex justify-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 
           .word {
             @apply flex;
@@ -42,13 +42,7 @@ body {
       }
 
       .slide-description {
-        @apply absolute top-[60%] left-[70%] mt-20 w-[50%] flex flex-col gap-8 text-center transform -translate-x-1/2 -translate-y-1/2
-               max-[1000px]:left-1/2 max-[1000px]:bottom-[5%] max-[1000px]:top-auto;
-
-        .slide-info p {
-          @apply uppercase text-[0.95rem];
-        }
-
+        @apply relative top-[60%] left-[60%] w-[35%] md:w-[50%]  text-center transform drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
         .line {
           @apply overflow-hidden;
 
@@ -57,54 +51,9 @@ body {
           }
         }
       }
-    }
-  }
-}
 
-@layer components {
-  .slider {
-    @apply relative w-screen h-svh text-white overflow-hidden;
-
-    .slider-canvas {
-      @apply block w-full h-full;
-    }
-
-    .slider-content {
-      @apply absolute top-0 left-0 select-none w-full h-full z-2;
-
-      .slide-title {
-        @apply absolute top-[45%] left-1/2 w-full text-center transform -translate-x-1/2 -translate-y-1/2 max-[1000px]:top-1/2;
-
-        h1 {
-          @apply uppercase text-[7vw] font-bold flex justify-center drop-shadow-xl;
-
-          .word {
-            @apply flex;
-          }
-
-          .char {
-            @apply block overflow-hidden;
-
-            span {
-              @apply relative inline-block will-change-transform;
-            }
-          }
-        }
-      }
-
-      .slide-description {
-        @apply relative top-[60%] left-[60%] w-[50%] md:w-[25%] flex flex-col  text-center transform 
-                 drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
-        .line {
-          @apply overflow-hidden;
-
-          span {
-            @apply relative inline-block will-change-transform;
-          }
-        }
-      }
       .slide-info {
-        @apply absolute top-5 left-5 flex flex-col gap-1;
+        @apply absolute top-5 left-5  gap-1 opacity-[0.95] drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
         p {
           @apply uppercase text-[0.95rem] drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
         }

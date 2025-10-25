@@ -64,8 +64,20 @@ export function useSlideTransition({
             duration: 0.8,
             stagger: 0.02,
             ease: "power2.out",
-            delay: 0.15,
+            // delay: 0.15,
           }
+        );
+
+        gsap.to(
+          ".slide-info",
+          {
+            opacity: 1,
+            visibility: "visible",
+            duration: 1,
+            y: 0,
+            ease: "power2.out",
+          },
+          "<"
         );
       },
     });
@@ -88,6 +100,18 @@ export function useSlideTransition({
         lines,
         { y: "-100%", duration: 0.8, stagger: 0.02, ease: "power2.in" },
         0.05
+      )
+      .to(
+        ".slide-info",
+        {
+          opacity: 1,
+          visibility: "hidden",
+          duration: 0.5,
+
+          y: -20,
+          ease: "power2.in",
+        },
+        0
       );
   };
 

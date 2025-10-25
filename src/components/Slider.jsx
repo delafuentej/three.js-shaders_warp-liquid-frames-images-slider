@@ -46,7 +46,7 @@ export default function Slider() {
     gsap.fromTo(
       lines,
       { y: "100%" },
-      { y: "0%", duration: 0.8, stagger: 0.025, ease: "power2.out", delay: 0.2 }
+      { y: "0%", duration: 0.8, stagger: 0.025, ease: "power2.out" }
     );
   };
 

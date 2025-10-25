@@ -21,7 +21,7 @@ LensDistortion getLensDistortion(
   float inside = smoothstep(0.0, 1.0, -sphereSdf / (sphereRadius * 0.001));
 
   float mFactor = clamp(focusSdf / (sphereRadius - focusRadius) * inside, 0.0, 1.0);
-  mFactor = pow(mFactor, 5.0);
+  mFactor = pow(mFactor, 5.0);//-5.00
 
   vec2 distortedUV = getDistortedUV(uv, dir, mFactor * focusStrength);
   return LensDistortion(distortedUV, inside);
