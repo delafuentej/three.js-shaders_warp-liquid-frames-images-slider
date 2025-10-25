@@ -6,7 +6,7 @@ export const slides = [
     type: "Editorial",
     field: "Post-Apocalyptic Art",
     date: "2023",
-    image: "/images/img-1.jpg",
+    image: "/images/webp/img-1.webp",
   },
   {
     title: "Drift Beyond Orion",
@@ -15,7 +15,7 @@ export const slides = [
     type: "Sci-Fi Concept",
     field: "Futurism",
     date: "2022",
-    image: "/images/img-2.jpg",
+    image: "/images/webp/img-2.webp",
   },
   {
     title: "Silent Watcher",
@@ -24,7 +24,7 @@ export const slides = [
     type: "Cinematic Portrait",
     field: "Neo-Noir Photography",
     date: "2025",
-    image: "/images/img-3.jpg",
+    image: "/images/webp/img-3.webp",
   },
   {
     title: "Eclipse Ascendant",
@@ -33,7 +33,7 @@ export const slides = [
     type: "Conceptual",
     field: "Digital Matte",
     date: "2003",
-    image: "/images/img-4.jpg",
+    image: "/images/webp/img-4.webp",
   },
   {
     title: "Final Embers",
@@ -42,7 +42,7 @@ export const slides = [
     type: "Cinematic Portrait",
     field: "Neo-Noir Photography",
     date: "2012",
-    image: "/images/img-5.jpg",
+    image: "/images/webp/img-5.webp",
   },
   {
     title: "Obsidian Horizon",
@@ -51,7 +51,7 @@ export const slides = [
     type: "Editorial",
     field: "Neo-Noir",
     date: "2024",
-    image: "/images/img-6.jpg",
+    image: "/images/webp/img-6.webp",
   },
   {
     title: "Silent Whispers",
@@ -60,7 +60,7 @@ export const slides = [
     type: "Cinematic Portrait",
     field: "Neo-Noir Photography",
     date: "2008",
-    image: "/images/img-7.jpg",
+    image: "/images/webp/img-7.webp",
   },
   {
     title: "Silent Depths",
@@ -69,7 +69,7 @@ export const slides = [
     type: "Fine Art",
     field: "Surrealism",
     date: "2003",
-    image: "/images/img-8.jpg",
+    image: "/images/webp/img-8.webp",
   },
   {
     title: "Moonlit Whiskers",
@@ -78,7 +78,7 @@ export const slides = [
     type: "Illustration",
     field: "Cartoon Art",
     date: "2017",
-    image: "/images/img-9.jpg",
+    image: "/images/webp/img-9.webp",
   },
 
   {
@@ -88,7 +88,7 @@ export const slides = [
     type: "Cinematic",
     field: "Dark Portraiture",
     date: "1995",
-    image: "/images/img-10.jpg",
+    image: "/images/webp/img-10.webp",
   },
   {
     title: "The Void Within",
@@ -97,7 +97,7 @@ export const slides = [
     type: "Cinematic",
     field: "Psychological Portraiture",
     date: "2012",
-    image: "/images/img-11.jpg",
+    image: "/images/webp/img-11.webp",
   },
 
   {
@@ -107,7 +107,7 @@ export const slides = [
     type: "Conceptual Architecture",
     field: "Surreal Design",
     date: "1998",
-    image: "/images/img-12.jpg",
+    image: "/images/webp/img-12.webp",
   },
 
   {
@@ -117,6 +117,6 @@ export const slides = [
     type: "Cinematic Portrait",
     field: "Conceptual Drama",
     date: "2021",
-    image: "/images/img-13.jpg",
+    image: "/images/webp/img-13.webp",
   },
 ];
