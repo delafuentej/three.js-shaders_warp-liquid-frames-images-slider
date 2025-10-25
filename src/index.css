@@ -42,7 +42,7 @@ body {
       }
 
       .slide-description {
-        @apply absolute top-[60%] left-[60%] w-1/4 flex flex-col gap-8 text-center transform -translate-x-1/2 -translate-y-1/2
+        @apply absolute top-[60%] left-[70%] mt-20 w-[50%] flex flex-col gap-8 text-center transform -translate-x-1/2 -translate-y-1/2
                max-[1000px]:left-1/2 max-[1000px]:bottom-[5%] max-[1000px]:top-auto;
 
         .slide-info p {
@@ -93,19 +93,20 @@ body {
       }
 
       .slide-description {
-        @apply absolute top-[60%] left-[60%] w-[1/2] flex flex-col gap-8 text-center transform -translate-x-1/2 -translate-y-1/2
-               max-[1000px]:left-1/2 max-[1000px]:bottom-[5%] max-[1000px]:top-auto drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
-
-        .slide-info p {
-          @apply uppercase text-[0.95rem] drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
-        }
-
+        @apply relative top-[60%] left-[60%] w-[50%] md:w-[25%] flex flex-col  text-center transform 
+                 drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
         .line {
           @apply overflow-hidden;
 
           span {
             @apply relative inline-block will-change-transform;
           }
+        }
+      }
+      .slide-info {
+        @apply absolute top-5 left-5 flex flex-col gap-1;
+        p {
+          @apply uppercase text-[0.95rem] drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
         }
       }
     }

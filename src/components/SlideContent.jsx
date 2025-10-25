@@ -6,11 +6,11 @@ const SlideContent = ({ slide }) => {
       </div>
       <div className="slide-description">
         <p>{slide.description}</p>
-        <div className="slide-info">
-          <p>Type. {slide.type}</p>
-          <p>Field. {slide.field}</p>
-          <p>Date. {slide.date}</p>
-        </div>
+      </div>
+      <div className="slide-info">
+        <p>Type. {slide.type}</p>
+        <p>Field. {slide.field}</p>
+        <p>Date. {slide.date}</p>
       </div>
     </div>
   );
