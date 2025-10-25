@@ -3,7 +3,11 @@
 A **WebGL-powered image slider** featuring liquid warp transitions and dynamic text animations.  
 Built with **React**, **Three.js**, and **GSAP**, it fuses real-time shader distortion with fluid typography transitions.
 
-![Screenshot 1](public/images/app/app-1.png) &nbsp;&nbsp; ![Screenshot 2](public/images/app/app-2.png) &nbsp;&nbsp; ![Screenshot 3](public/images/app/app-4.png)
+**Live Demo:** [warp-liquid-frames-slider](https://three-js-shaders-warp-liquid-frames.vercel.app/)
+
+<img src="public/images/app/app-1.png" width="33%" />
+<img src="public/images/app/app-2.png" width="33%" />
+<img src="public/images/app/app-4.png" width="33%" />
 
 ---
 
@@ -54,19 +58,31 @@ Built with **React**, **Three.js**, and **GSAP**, it fuses real-time shader dist
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/warp-liquid-frames-slider.git
+   https://github.com/delafuentej/threejs-shaders_warp-liquid-frames-images-slider.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd warp-liquid-frames-slider
+   cd warp-liquid-frames-images-slider
    ```
 3. Install dependencies:
+
    ```bash
    npm install
    ```
+
+   or
+
+   ```bash
+    yarn install
+   ```
+
 4. Start the development server:
    ```bash
    npm run dev
+   ```
+   or
+   ```bash
+   yarn dev
    ```
 
 ---
