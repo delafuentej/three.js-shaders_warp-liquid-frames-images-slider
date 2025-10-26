@@ -1,5 +1,8 @@
 import { useEffect, useRef } from "react";
 
+// Lazy load de Three.js
+const loadThree = async () => await import("three");
+
 export function useThreeScene(vertexShader, fragmentShader, slides) {
   const canvasRef = useRef(null);
   const shaderMaterialRef = useRef(null);
@@ -12,8 +15,8 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
     let resizeListener;
 
     const initThree = async () => {
-      // Import dinámico de Three.js (lazy load)
-      const THREE = await import("three");
+      // Lazy load Three.js
+      const THREE = await loadThree();
       const {
         Scene,
         OrthographicCamera,
@@ -62,7 +65,7 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
       const plane = new Mesh(new PlaneGeometry(2, 2), shaderMaterial);
       scene.add(plane);
 
-      // Lazy load de texturas con IntersectionObserver
+      // Lazy load de texturas
       const loadTextures = async () => {
         const loader = new TextureLoader();
         const textures = await Promise.all(
@@ -70,9 +73,9 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
             (s) =>
               new Promise((resolve) => {
                 loader.load(s.image, (t) => {
-                  t.generateMipmaps = true;
+                  t.generateMipmaps = true; // activar mipmaps
                   t.minFilter = LinearMipMapLinearFilter;
-                  t.minFilter = t.magFilter = LinearFilter;
+                  t.magFilter = LinearFilter;
                   t.userData = {
                     size: new Vector2(t.image.width, t.image.height),
                   };
@@ -81,6 +84,7 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
               })
           )
         );
+
         if (!mounted) return;
 
         texturesRef.current = textures;
@@ -91,6 +95,7 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
           textures[1 % textures.length].userData.size;
       };
 
+      // IntersectionObserver para cargar texturas solo cuando el canvas está visible
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
@@ -100,7 +105,6 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
         },
         { threshold: 0.1 }
       );
-
       if (canvasRef.current) observer.observe(canvasRef.current);
 
       // Render loop

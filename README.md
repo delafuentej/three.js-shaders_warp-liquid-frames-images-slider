@@ -3,7 +3,7 @@
 A **WebGL-powered image slider** featuring liquid warp transitions and dynamic text animations.  
 Built with **React**, **Three.js**, and **GSAP**, it fuses real-time shader distortion with fluid typography transitions.
 
-**🌐Live Demo:** [warp-liquid-frames-slider](https:/three-js-shaders-warp-liquid-frames.vercel.app/)
+**🌐 Live Demo:** [warp-liquid-frames-slider](https://three-js-shaders-warp-liquid-frames.vercel.app/)
 
 <p align="center" width="100%">
 <img src="public/images/app/app-1.png" width="30%" />
@@ -43,7 +43,6 @@ Built with **React**, **Three.js**, and **GSAP**, it fuses real-time shader dist
     The project uses **custom shaders** to achieve the liquid warp effect between slides.
 
 - Uniforms:
-
   - uTexture1, uTexture2: Textures of the current and next slides.
 
   - uProgress: Transition progress (0 → 1).
