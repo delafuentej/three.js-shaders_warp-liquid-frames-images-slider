@@ -8,11 +8,12 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
 
   useEffect(() => {
     let mounted = true;
-    let THREE;
+    let renderer;
+    let resizeListener;
 
-    (async () => {
-      // Import dinámico de Three.js
-      THREE = await import("three");
+    const initThree = async () => {
+      // Import dinámico de Three.js (lazy load)
+      const THREE = await import("three");
       const {
         Scene,
         OrthographicCamera,
@@ -23,33 +24,23 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
         ShaderMaterial,
         Mesh,
         PlaneGeometry,
+        LinearMipMapLinearFilter,
       } = THREE;
 
+      if (!mounted || !canvasRef.current) return;
+
+      // Escena, cámara y renderer
       const scene = new Scene();
       const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
-      const renderer = new WebGLRenderer({
+      renderer = new WebGLRenderer({
         canvas: canvasRef.current,
         antialias: true,
+        alpha: true,
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
       rendererRef.current = renderer;
 
-      // Carga de texturas
-      const loader = new TextureLoader();
-      const loadPromises = slides.map(
-        (s) =>
-          new Promise((resolve) => {
-            loader.load(s.image, (t) => {
-              t.minFilter = t.magFilter = LinearFilter;
-              t.userData = {
-                size: new Vector2(t.image.width, t.image.height),
-              };
-              resolve(t);
-            });
-          })
-      );
-
-      // Shader Material
+      // Shader material
       const shaderMaterial = new ShaderMaterial({
         uniforms: {
           uTexture1: { value: null },
@@ -71,42 +62,74 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
       const plane = new Mesh(new PlaneGeometry(2, 2), shaderMaterial);
       scene.add(plane);
 
+      // Lazy load de texturas con IntersectionObserver
+      const loadTextures = async () => {
+        const loader = new TextureLoader();
+        const textures = await Promise.all(
+          slides.map(
+            (s) =>
+              new Promise((resolve) => {
+                loader.load(s.image, (t) => {
+                  t.generateMipmaps = true;
+                  t.minFilter = LinearMipMapLinearFilter;
+                  t.minFilter = t.magFilter = LinearFilter;
+                  t.userData = {
+                    size: new Vector2(t.image.width, t.image.height),
+                  };
+                  resolve(t);
+                });
+              })
+          )
+        );
+        if (!mounted) return;
+
+        texturesRef.current = textures;
+        shaderMaterial.uniforms.uTexture1.value = textures[0];
+        shaderMaterial.uniforms.uTexture2.value = textures[1 % textures.length];
+        shaderMaterial.uniforms.uTexture1Size.value = textures[0].userData.size;
+        shaderMaterial.uniforms.uTexture2Size.value =
+          textures[1 % textures.length].userData.size;
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadTextures();
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 }
+      );
+
+      if (canvasRef.current) observer.observe(canvasRef.current);
+
+      // Render loop
       const render = () => {
         if (!mounted) return;
         renderer.render(scene, camera);
         requestAnimationFrame(render);
       };
-
-      // Cuando se cargan todas las texturas
-      const textures = await Promise.all(loadPromises);
-      if (!mounted) return;
-
-      texturesRef.current = textures;
-      shaderMaterial.uniforms.uTexture1.value = textures[0];
-      shaderMaterial.uniforms.uTexture2.value = textures[1 % textures.length];
-      shaderMaterial.uniforms.uTexture1Size.value = textures[0].userData.size;
-      shaderMaterial.uniforms.uTexture2Size.value =
-        textures[1 % textures.length].userData.size;
-
       render();
 
       // Resize
-      const handleResize = () => {
+      resizeListener = () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         shaderMaterial.uniforms.uResolution.value.set(
           window.innerWidth,
           window.innerHeight
         );
       };
-      window.addEventListener("resize", handleResize);
+      window.addEventListener("resize", resizeListener);
+    };
 
-      // Cleanup
-      return () => {
-        mounted = false;
-        window.removeEventListener("resize", handleResize);
-        renderer.dispose();
-      };
-    })();
+    initThree();
+
+    // Cleanup
+    return () => {
+      mounted = false;
+      if (renderer) renderer.dispose();
+      if (resizeListener) window.removeEventListener("resize", resizeListener);
+    };
   }, [vertexShader, fragmentShader, slides]);
 
   return { canvasRef, shaderMaterialRef, texturesRef };

@@ -1,32 +1,11 @@
-const { gsap } = await import("gsap");
-const SplitText = (await import("gsap/SplitText")).default;
-
-gsap.registerPlugin(SplitText);
+import { useRef } from "react";
 
 export function useSlideTextAnimations(contentRef) {
-  /**
-   * Divide los textos de título, descripción e información
-   * en caracteres o líneas según el caso.
-   */
-  const processTextElements = () => {
-    const container = contentRef.current;
-    if (!container) return;
+  const gsapRef = useRef(null);
+  const SplitTextRef = useRef(null);
 
-    const titleEl = container.querySelector(".slide-title h1");
-    const descEl = container.querySelector(".slide-description p");
-    const infoEls = container.querySelectorAll(".slide-info p");
-
-    if (titleEl) splitIntoChars(titleEl);
-    if (descEl) splitIntoLines(descEl);
-    if (infoEls.length > 0) infoEls.forEach(splitIntoLines);
-  };
-
-  /**
-   * Divide un texto en caracteres envueltos en elementos <span>
-   * permitiendo animaciones por letra.
-   */
+  // Divide los textos en caracteres
   const splitIntoChars = (element) => {
-    // Evitar reprocesar si ya fue dividido
     if (!element || element.querySelector(".char")) return;
 
     const words = element.textContent.trim().split(" ");
@@ -42,23 +21,45 @@ export function useSlideTextAnimations(contentRef) {
     element.innerHTML = html;
   };
 
-  /**
-   * Divide un párrafo en líneas para animarlas independientemente.
-   */
+  // Divide en líneas (requiere SplitText)
   const splitIntoLines = (element) => {
+    const SplitText = SplitTextRef.current;
+    if (!SplitText || !element) return;
+
     const split = new SplitText(element, { type: "lines", linesClass: "line" });
     split.lines.forEach((line) => {
       line.innerHTML = `<span>${line.textContent}</span>`;
     });
   };
 
-  /**
-   * Anima la entrada del texto dividido en caracteres y líneas.
-   */
-  const animateIn = () => {
+  // Procesa todos los elementos de texto
+  const processTextElements = () => {
     const container = contentRef.current;
     if (!container) return;
 
+    const titleEl = container.querySelector(".slide-title h1");
+    const descEl = container.querySelector(".slide-description p");
+    const infoEls = container.querySelectorAll(".slide-info p");
+
+    if (titleEl) splitIntoChars(titleEl);
+    if (descEl) splitIntoLines(descEl);
+    if (infoEls.length > 0) infoEls.forEach(splitIntoLines);
+  };
+
+  // Anima la entrada de texto
+  const animateIn = async () => {
+    if (!contentRef.current) return;
+
+    // Lazy load GSAP y SplitText solo si no se han cargado
+    if (!gsapRef.current || !SplitTextRef.current) {
+      const gsapModule = await import("gsap");
+      gsapRef.current = gsapModule.gsap;
+      SplitTextRef.current = (await import("gsap/SplitText")).default;
+      gsapRef.current.registerPlugin(SplitTextRef.current);
+    }
+
+    const gsap = gsapRef.current;
+    const container = contentRef.current;
     const chars = container.querySelectorAll(".char span");
     const lines = container.querySelectorAll(".line span");
 
@@ -72,7 +73,7 @@ export function useSlideTextAnimations(contentRef) {
       lines,
       { yPercent: 100 },
       { yPercent: 0, duration: 0.8, stagger: 0.025 },
-      "-=0.6" // solapamos animaciones
+      "-=0.6"
     );
   };
 

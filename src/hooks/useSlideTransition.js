@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import gsap from "gsap";
 
 export function useSlideTransition({
   slides,
@@ -10,11 +9,25 @@ export function useSlideTransition({
 }) {
   const currentIndexRef = useRef(0);
   const isTransitioningRef = useRef(false);
+  let gsap;
+  let SplitText;
 
-  const animateSlideTransition = (nextIndex) => {
+  const loadGsap = async () => {
+    if (!gsap || !SplitText) {
+      const gsapModule = await import("gsap");
+      gsap = gsapModule.gsap;
+      SplitText = (await import("gsap/SplitText")).default;
+      gsap.registerPlugin(SplitText);
+    }
+  };
+
+  const animateSlideTransition = async (nextIndex) => {
+    await loadGsap(); // Lazy load GSAP solo cuando se necesite
+
     const shaderMat = shaderMaterialRef.current;
     const textures = texturesRef.current;
-    if (!shaderMat || textures.length === 0) return;
+    const content = contentRef.current;
+    if (!shaderMat || textures.length === 0 || !content) return;
 
     shaderMat.uniforms.uTexture1.value = textures[currentIndexRef.current];
     shaderMat.uniforms.uTexture2.value = textures[nextIndex];
@@ -22,7 +35,6 @@ export function useSlideTransition({
       textures[currentIndexRef.current].userData.size;
     shaderMat.uniforms.uTexture2Size.value = textures[nextIndex].userData.size;
 
-    const content = contentRef.current;
     const chars = content.querySelectorAll(".char span");
     const lines = content.querySelectorAll(".line span");
 
@@ -36,7 +48,7 @@ export function useSlideTransition({
         shaderMat.uniforms.uTexture1Size.value =
           textures[nextIndex].userData.size;
 
-        // actualizar contenido -// update DOM text content to new slide (keep same structure)
+        // actualizar contenido
         const titleEl = content.querySelector(".slide-title h1");
         const descEl = content.querySelector(".slide-description p");
         const infoEls = content.querySelectorAll(".slide-info p");
@@ -48,9 +60,12 @@ export function useSlideTransition({
           infoEls[1].textContent = `Field. ${slides[nextIndex].field}`;
         if (infoEls[2])
           infoEls[2].textContent = `Date. ${slides[nextIndex].date}`;
+
         processTextElements(content);
+
         const inChars = content.querySelectorAll(".char span");
         const inLines = content.querySelectorAll(".line span");
+
         gsap.fromTo(
           inChars,
           { y: "100%" },
@@ -59,36 +74,23 @@ export function useSlideTransition({
         gsap.fromTo(
           inLines,
           { y: "100%" },
-          {
-            y: "0%",
-            duration: 0.8,
-            stagger: 0.02,
-            ease: "power2.out",
-            // delay: 0.15,
-          }
+          { y: "0%", duration: 0.8, stagger: 0.02, ease: "power2.out" }
         );
 
-        gsap.to(
-          ".slide-info",
-          {
-            opacity: 1,
-            visibility: "visible",
-            duration: 1,
-            y: 0,
-            ease: "power2.out",
-          },
-          "<"
-        );
+        gsap.to(".slide-info", {
+          opacity: 1,
+          visibility: "visible",
+          duration: 1,
+          y: 0,
+          ease: "power2.out",
+        });
       },
     });
-    // shader progress animation (uniform)
+
+    // shader progress + salida de contenido
     tl.to(
       shaderMat.uniforms.uProgress,
-      {
-        value: 1,
-        duration: 2.5,
-        ease: "power2.inOut",
-      },
+      { value: 1, duration: 2.5, ease: "power2.inOut" },
       0
     )
       .to(
@@ -107,7 +109,6 @@ export function useSlideTransition({
           opacity: 1,
           visibility: "hidden",
           duration: 0.5,
-
           y: -20,
           ease: "power2.in",
         },
