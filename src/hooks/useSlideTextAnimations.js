@@ -1,5 +1,5 @@
-import gsap from "gsap";
-import { SplitText } from "gsap/all";
+const { gsap } = await import("gsap");
+const SplitText = (await import("gsap/SplitText")).default;
 
 gsap.registerPlugin(SplitText);
 

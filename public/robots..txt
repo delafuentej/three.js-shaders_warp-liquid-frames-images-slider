@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /node_modules/
+Disallow: /dist/
+Disallow: /src/
+Allow: /
+Sitemap: https://three-js-shaders-warp-liquid-frames.vercel.app/
