@@ -1,21 +1,39 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import vitePreloadPlugin from "vite-plugin-preload";
 import glsl from "vite-plugin-glsl";
-import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    minify: "esbuild",
+    chunkSizeWarningLimit: 2000, // en KB
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ["three"],
+          react: ["react", "react-dom"],
+          gsap: ["gsap"],
+        },
+      },
+    },
+    terserOptions: {
+      compress: {
+        drop_console: true, // elimina console.log
+        drop_debugger: true,
+      },
+    },
+  },
   plugins: [
     react(),
-    glsl({
-      include: [
-        // Qué archivos aceptar
-        "**/*.glsl",
-        "**/*.wgsl",
-        "**/*.vert",
-        "**/*.frag",
-      ],
+    vitePreloadPlugin({
+      rel: "preload",
+      as: "style",
+      includeCss: true,
+      includeJs: false,
     }),
-    tailwindcss(),
+    glsl({
+      include: ["**/*.glsl", "**/*.wgsl", "**/*.vert", "**/*.frag"],
+    }),
   ],
 });

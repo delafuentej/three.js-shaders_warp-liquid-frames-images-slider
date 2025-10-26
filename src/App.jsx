@@ -1,15 +1,11 @@
-import { SplitText } from "gsap/all";
-import gsap from "gsap";
-
-import { Slider } from "./components";
-//
-gsap.registerPlugin(SplitText);
+import { lazy, Suspense } from "react";
+const Slider = lazy(() => import("./components/Slider"));
 
 function App() {
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       <Slider />
-    </div>
+    </Suspense>
   );
 }
 

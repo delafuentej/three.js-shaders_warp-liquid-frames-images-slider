@@ -1,5 +1,15 @@
 import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  Scene,
+  OrthographicCamera,
+  WebGLRenderer,
+  TextureLoader,
+  LinearFilter,
+  Vector2,
+  ShaderMaterial,
+  Mesh,
+  PlaneGeometry,
+} from "three";
 
 export function useThreeScene(vertexShader, fragmentShader, slides) {
   const canvasRef = useRef(null);
@@ -8,40 +18,40 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
   const texturesRef = useRef([]);
 
   useEffect(() => {
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const scene = new Scene();
+    const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       canvas: canvasRef.current,
       antialias: true,
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     rendererRef.current = renderer;
 
-    const loader = new THREE.TextureLoader();
+    const loader = new TextureLoader();
     const loadPromises = slides.map(
       (s) =>
         new Promise((resolve) => {
           loader.load(s.image, (t) => {
-            t.minFilter = t.magFilter = THREE.LinearFilter;
+            t.minFilter = t.magFilter = LinearFilter;
             t.userData = {
-              size: new THREE.Vector2(t.image.width, t.image.height),
+              size: new Vector2(t.image.width, t.image.height),
             };
             resolve(t);
           });
         })
     );
 
-    const shaderMaterial = new THREE.ShaderMaterial({
+    const shaderMaterial = new ShaderMaterial({
       uniforms: {
         uTexture1: { value: null },
         uTexture2: { value: null },
         uProgress: { value: 0.0 },
         uResolution: {
-          value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+          value: new Vector2(window.innerWidth, window.innerHeight),
         },
-        uTexture1Size: { value: new THREE.Vector2(1, 1) },
-        uTexture2Size: { value: new THREE.Vector2(1, 1) },
+        uTexture1Size: { value: new Vector2(1, 1) },
+        uTexture2Size: { value: new Vector2(1, 1) },
       },
       vertexShader,
       fragmentShader,
@@ -49,7 +59,7 @@ export function useThreeScene(vertexShader, fragmentShader, slides) {
     });
     shaderMaterialRef.current = shaderMaterial;
 
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), shaderMaterial);
+    const plane = new Mesh(new PlaneGeometry(2, 2), shaderMaterial);
     scene.add(plane);
 
     let mounted = true;
