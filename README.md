@@ -3,7 +3,7 @@
 A **WebGL-powered image slider** featuring liquid warp transitions and dynamic text animations.  
 Built with **React**, **Three.js**, and **GSAP**, it fuses real-time shader distortion with fluid typography transitions.
 
-**🌐Live Demo:** [warp-liquid-frames-slider](https://three-js-shaders-warp-liquid-frames.vercel.app/)
+**🌐Live Demo:** [warp-liquid-frames-slider](https:/three-js-shaders-warp-liquid-frames.vercel.app/)
 
 <p align="center" width="100%">
 <img src="public/images/app/app-1.png" width="30%" />
@@ -26,14 +26,15 @@ Built with **React**, **Three.js**, and **GSAP**, it fuses real-time shader dist
 
 ## 🧩 Tech Stack
 
-| Technology                  | Purpose                                             |
-| --------------------------- | --------------------------------------------------- |
-| **React**                   | UI and component structure                          |
-| **Three.js**                | WebGL rendering and texture blending                |
-| **GSAP**                    | Animation engine                                    |
-| **SplitText (GSAP plugin)** | Text splitting and per-character motion             |
-| **Vite**                    | Modern bundler and dev server                       |
-| **GLSL**                    | Vertex and fragment shaders for liquid warp effects |
+| Technology                  | Purpose                                                |
+| --------------------------- | ------------------------------------------------------ |
+| **React**                   | UI and component structure                             |
+| **Three.js**                | WebGL rendering and texture blending                   |
+| **GSAP**                    | Animation engine                                       |
+| **SplitText (GSAP plugin)** | Text splitting and per-character motion                |
+| **Vite**                    | Modern bundler and dev server                          |
+| **GLSL**                    | Vertex and fragment shaders for liquid warp effects    |
+| **TailwindCSS**             | Utility-first styling for layout and responsive design |
 
 ---
 
